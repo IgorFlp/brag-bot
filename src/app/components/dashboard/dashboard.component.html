@@ -1,0 +1,108 @@
+<div class="dashboard">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="header-title">brag-bot <span class="header-subtitle">| Pós IA UNIPDS</span></h1>
+      <p class="header-description">
+        Transforme suas conquistas brutas em narrativas de impacto para seu portfólio
+      </p>
+    </div>
+  </header>
+
+  <main class="dashboard-main">
+    <section class="generator-section">
+      <form class="generator-form" (ngSubmit)="onGenerate()">
+        <label class="form-label" for="raw-input">Sua conquista bruta</label>
+        <textarea
+          id="raw-input"
+          class="form-textarea"
+          [value]="rawInput()"
+          (input)="onInputChange($event)"
+          placeholder="Ex: Liderou migração de legacy para microserviços, reduziu custos 40%..."
+          rows="4"
+          [disabled]="isGenerating()"
+          aria-describedby="input-hint"
+        ></textarea>
+        <p id="input-hint" class="form-hint">
+          Descreva sua conquista de forma crua — o bot destila o contexto, impacto e métricas.
+        </p>
+
+        <button
+          type="submit"
+          class="btn btn-primary btn-lg"
+          [disabled]="!canGenerate()"
+          [class.btn-loading]="isGenerating()"
+        >
+          @if (isGenerating()) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span>Destilando...</span>
+          } @else {
+            <span>Destilar conquista</span>
+            <svg class="btn-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          }
+        </button>
+      </form>
+
+      @if (error()) {
+        <div class="error-toast" role="alert">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span>{{ error() }}</span>
+        </div>
+      }
+    </section>
+
+    <section class="brags-section">
+      <div class="section-header">
+        <h2 class="section-title">Conquistas Destiladas</h2>
+        @if (brags().length > 0) {
+          <span class="section-count">{{ brags().length }} conquista{{ brags().length !== 1 ? 's' : '' }}</span>
+        }
+      </div>
+
+      @if (brags().length === 0) {
+        <div class="empty-state">
+          <svg class="empty-icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+          <h3 class="empty-title">Nenhuma conquista ainda</h3>
+          <p class="empty-description">Sua primeira conquista destilada aparecerá aqui. Comece descrevendo algo incrível que você fez!</p>
+        </div>
+      } @else {
+        <div class="brags-grid">
+          @for (brag of brags(); track brag.id) {
+            <article class="brag-card" (click)="onViewDetail(brag)" tabindex="0" (keydown.enter)="onViewDetail(brag)" (keydown.space)="onViewDetail(brag); $event.preventDefault()">
+              <div class="card-header">
+                <span class="card-badge">NOVO</span>
+                <time class="card-date" [attr.datetime]="brag.createdAt.toISOString()">
+                  {{ brag.createdAt | date:'dd/MM/yyyy' }}
+                </time>
+              </div>
+              <h3 class="card-title">{{ brag.title }}</h3>
+              <p class="card-context">{{ brag.context | slice:0:120 }}{{ brag.context.length > 120 ? '...' : '' }}</p>
+              <div class="card-footer">
+                <div class="card-tech" aria-label="Tecnologias">
+                  @for (tech of brag.technologies.slice(0, 3); track tech) {
+                    <span class="tech-tag">{{ tech }}</span>
+                  }
+                  @if (brag.technologies.length > 3) {
+                    <span class="tech-tag tech-more">+{{ brag.technologies.length - 3 }}</span>
+                  }
+                </div>
+                <span class="card-arrow" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </span>
+              </div>
+            </article>
+          }
+        </div>
+      }
+    </section>
+  </main>
+</div>
