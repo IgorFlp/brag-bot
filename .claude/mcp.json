@@ -1,0 +1,24 @@
+{
+    "mcpServers": {
+        "nx-mcp": {
+            "command": "npx",
+            "args": [
+                "nx",
+                "mcp"
+            ]
+        },
+        "genkit-mcp-server": {
+            "$typeName": "exa.cascade_plugins_pb.CascadePluginCommandTemplate",
+            "command": "npx",
+            "args": [
+                "-y",
+                "genkit-cli@^1.28.0",
+                "mcp",
+                "--explicitProjectRoot",
+                "--no-update-notification",
+                "--non-interactive"
+            ],
+            "env": {}
+        }
+    }
+}
