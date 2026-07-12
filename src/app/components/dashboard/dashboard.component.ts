@@ -28,7 +28,7 @@ export class DashboardComponent {
 
     const prompt = this.rawInput().trim();
     try {
-      const newBrag = await this.bragService.generateMockBrag(prompt);
+      const newBrag = await this.bragService.generateBrag(prompt);
       this.rawInput.set('');
       // Navigate to detail view of the new brag
       this.router.navigate(['/detail', newBrag.id]);
