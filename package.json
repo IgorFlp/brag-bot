@@ -8,7 +8,9 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:brag-bot": "node dist/brag-bot/server/server.mjs",
-    "genkit:ui": "genkit start -- npx tsx --watch src/flows.ts"
+    "genkit:ui": "genkit start -- npx tsx --watch src/flows.ts",
+    "cypress:open": "cypress open --config-file cypress/cypress.config.ts",
+    "cypress:run": "cypress run --config-file cypress/cypress.config.ts"
   },
   "private": true,
   "packageManager": "npm@10.9.7",
@@ -36,7 +38,9 @@
     "@angular/compiler-cli": "^21.2.0",
     "@tailwindcss/postcss": "^4.1.12",
     "@types/express": "^5.0.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.17.19",
+    "cypress": "^15.18.1",
     "jsdom": "^28.0.0",
     "postcss": "^8.5.3",
     "prettier": "^3.8.1",
